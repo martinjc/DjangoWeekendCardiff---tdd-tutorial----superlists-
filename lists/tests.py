@@ -1,4 +1,5 @@
 from django.core.urlresolvers import resolve
+from django.template.loader import render_to_string
 from django.test import TestCase
 from django.http import HttpRequest
 
@@ -10,6 +11,5 @@ class SmokeTest(TestCase):
     def test_home_page_returns_correct_html(self):
         request = HttpRequest()
         response = home_page(request)
-        self.assertTrue(response.content.decode().startswith('<html>'))
-        self.assertIn('<title>To-Do lists</title>', response.content.decode())
-        self.assertTrue(response.content.decode().endswith('</html>'))
+        expected_html = render_to_string('home.html')
+        self.assertEqual(response.content.decode(), expected_html)
